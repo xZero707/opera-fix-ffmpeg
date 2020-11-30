@@ -18,11 +18,10 @@ if [ "${EUID}" -ne 0 ]; then
   exit $?
 fi
 
-if ! command -v snap &> /dev/null
-then
-    echo "Error: snapd is not installed"
-    echo "Command 'snap' not found"
-    exit 1
+if ! command -v snap &>/dev/null; then
+  echo "Error: snapd is not installed"
+  echo "Command 'snap' not found"
+  exit 1
 fi
 
 if [ ! -d "${OPERA_PATH}" ]; then
