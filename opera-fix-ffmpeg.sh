@@ -12,7 +12,7 @@ validate_symlink() {
 }
 
 # Elevate privileges if possible. Required.
-if [ "${EUID}" -ne 0 ]; then
+if [ "${EUID:-1000}" != 0 ]; then
   echo "Elevating privileges..."
   sudo "$0" "$@"
   exit $?
