@@ -21,7 +21,13 @@ fi
 if ! command -v snap &>/dev/null; then
   echo "Error: snapd is not installed"
   echo "Command 'snap' not found"
-  exit 1
+
+  # For some reason, 'command -v snap' reportedly fails even if snap is installed
+  if [ -f /usr/bin/snap ] && [ -x /usr/bin/snap ]; then
+    echo "However, executable /usr/bin/snap has been found. Attempting to proceed anyway..."
+  else
+    exit 1
+  fi
 fi
 
 if [ ! -d "${OPERA_PATH}" ]; then
