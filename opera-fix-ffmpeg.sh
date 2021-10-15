@@ -4,7 +4,7 @@
 OPERA_PATH="${1:-/usr/lib/opera}"
 
 validate_symlink() {
-  SYMLINK_DEST=$(readlink "${1}/libffmpeg.so" | egrep '^/snap/chromium-ffmpeg/current/chromium-ffmpeg-[[:digit:]]')
+  SYMLINK_DEST=$(readlink "${1}/libffmpeg.so" | grep -E '^/snap/chromium-ffmpeg/current/chromium-ffmpeg-[[:digit:]]')
 
   if [ ! -f "${SYMLINK_DEST}" ]; then
     return 1
@@ -49,7 +49,7 @@ else
   snap refresh chromium-ffmpeg
 fi
 
-LATEST_FFMPEG_VER="$(ls /snap/chromium-ffmpeg/current/ | egrep '^chromium-ffmpeg-[[:digit:]]' | tail -1)"
+LATEST_FFMPEG_VER="$(ls /snap/chromium-ffmpeg/current/ | grep -E '^chromium-ffmpeg-[[:digit:]]' | tail -1)"
 LATEST_FFMPEG_LIB="/snap/chromium-ffmpeg/current/${LATEST_FFMPEG_VER}/chromium-ffmpeg/libffmpeg.so"
 
 echo "Backing up original ${OPERA_PATH}/libffmpeg.so -> ${OPERA_PATH}/libffmpeg.so.bak"
