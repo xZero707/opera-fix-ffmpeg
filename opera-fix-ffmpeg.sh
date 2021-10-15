@@ -11,6 +11,12 @@ validate_symlink() {
   fi
 }
 
+if [ ! -d "${OPERA_PATH}" ]; then
+  echo "Directory not found '${OPERA_PATH}'. Have you supplied correct Opera path?"
+  echo "Example: sudo $0 /usr/lib/opera"
+  exit 1
+fi
+
 # Elevate privileges if possible. Required.
 if [ "${EUID:-1000}" != 0 ]; then
   echo "Elevating privileges..."
@@ -28,12 +34,6 @@ if ! command -v snap &>/dev/null; then
   else
     exit 1
   fi
-fi
-
-if [ ! -d "${OPERA_PATH}" ]; then
-  echo "Directory not found '${OPERA_PATH}'. Have you supplied correct Opera path?"
-  echo "Example: sudo $0 /usr/lib/opera"
-  exit 1
 fi
 
 if validate_symlink "${OPERA_PATH}"; then
