@@ -38,11 +38,11 @@ if ! command -v snap &>/dev/null; then
   echo "Command 'snap' not found"
 
   # For some reason, 'command -v snap' reportedly fails even if snap is installed
-  if [ -f /usr/bin/snap ] && [ -x /usr/bin/snap ]; then
-    echo "However, executable /usr/bin/snap has been found. Attempting to proceed anyway..."
-  else
+  if [ ! -f /usr/bin/snap ] || [ ! -x /usr/bin/snap ]; then
     exit 1
   fi
+
+  echo "However, executable /usr/bin/snap has been found. Attempting to proceed anyway..."
 fi
 
 if [ ! -d "/snap/chromium-ffmpeg" ]; then
