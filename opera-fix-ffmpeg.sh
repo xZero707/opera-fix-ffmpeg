@@ -4,6 +4,10 @@
 OPERA_PATH="${1:-/usr/lib/opera}"
 
 validate_symlink() {
+  if [ ! -d "/snap/chromium-ffmpeg" ]; then
+    return 1;
+  fi
+
   SYMLINK_DEST=$(readlink "${1}/libffmpeg.so" | grep -E '^/snap/chromium-ffmpeg/current/chromium-ffmpeg-[[:digit:]]')
 
   if [ ! -f "${SYMLINK_DEST}" ]; then
@@ -14,6 +18,11 @@ validate_symlink() {
 if [ ! -d "${OPERA_PATH}" ]; then
   echo "Directory not found '${OPERA_PATH}'. Have you supplied correct Opera path?"
   echo "Example: sudo $0 /usr/lib/opera"
+  exit 1
+fi
+
+if validate_symlink "${OPERA_PATH}"; then
+  echo "Symlink is already up to date. Nothing to do."
   exit 1
 fi
 
@@ -34,11 +43,6 @@ if ! command -v snap &>/dev/null; then
   else
     exit 1
   fi
-fi
-
-if validate_symlink "${OPERA_PATH}"; then
-  echo "Symlink is already up to date. Nothing to do."
-  exit 1
 fi
 
 if [ ! -d "/snap/chromium-ffmpeg" ]; then
