@@ -2,6 +2,7 @@
 # See: https://forums.opera.com/topic/37539/solving-the-problem-of-the-opera-browser-with-video-playback-in-ubuntu-and-similar-distributions-linux-mint-kde-neon/
 
 OPERA_PATH="${1:-/usr/lib/opera}"
+SNAP_BINARY="${2:-/usr/bin/snap}"
 
 validate_symlink() {
   if [ ! -d "/snap/chromium-ffmpeg" ]; then
@@ -38,19 +39,22 @@ if ! command -v snap &>/dev/null; then
   echo "Command 'snap' not found"
 
   # For some reason, 'command -v snap' reportedly fails even if snap is installed
-  if [ ! -f /usr/bin/snap ] || [ ! -x /usr/bin/snap ]; then
+  if [ ! -f "${SNAP_BINARY}" ] || [ ! -x "${SNAP_BINARY}" ]; then
+    echo "All checks have failed. ${SNAP_BINARY} is not present and/or valid."
+    echo "If you think this is a mistake, you can supply correct path as second argument."
+    echo "Example: sudo $0 /usr/lib/opera /usr/bin/snap"
     exit 1
   fi
 
-  echo "However, executable /usr/bin/snap has been found. Attempting to proceed anyway..."
+  echo "However, executable ${SNAP_BINARY} has been found. Attempting to proceed anyway..."
 fi
 
 if [ ! -d "/snap/chromium-ffmpeg" ]; then
   echo "Attempting to install library chromium-ffmpeg"
-  snap install chromium-ffmpeg
+  "${SNAP_BINARY}" install chromium-ffmpeg
 else
   echo "Attempting to update library chromium-ffmpeg"
-  snap refresh chromium-ffmpeg
+  "${SNAP_BINARY}" refresh chromium-ffmpeg
 fi
 
 LATEST_FFMPEG_VER="$(ls /snap/chromium-ffmpeg/current/ | grep -E '^chromium-ffmpeg-[[:digit:]]' | tail -1)"
