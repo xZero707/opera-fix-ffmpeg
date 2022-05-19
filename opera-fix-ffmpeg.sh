@@ -6,7 +6,7 @@ echo "However, files are backed up before changing, so you can always restore"
 echo "Script will automatically proceed in 10 seconds. Press CTRL-C to cancel."
 sleep 10
 
-# default installation path of Opera using their .deb file. Tested on Pop!_OS 22.04
+# default installation path of Opera using their .deb file
 OPERA_PATH="${1:-/usr/lib/x86_64-linux-gnu/opera}"
 SNAP_BINARY="${2:-/usr/bin/snap}"
 
@@ -63,8 +63,8 @@ else
   "${SNAP_BINARY}" refresh chromium-ffmpeg
 fi
 
-LATEST_FFMPEG_VER="$(ls /snap/chromium-ffmpeg/current/ | grep -E '^chromium-ffmpeg-1[[:digit:]]' | tail -1)"
-LATEST_FFMPEG_LIB="/snap/chromium-ffmpeg/current/${LATEST_FFMPEG_VER}/chromium-ffmpeg/libffmpeg.so"
+LATEST_FFMPEG_VER="$(ls /snap/chromium-ffmpeg/current/ | grep -E '^chromium-ffmpeg-[[:digit:]]'| awk -F- '{ print $3; }'|sort -n|tail -1)"
+LATEST_FFMPEG_LIB="/snap/chromium-ffmpeg/current/chromium-ffmpeg-${LATEST_FFMPEG_VER}/chromium-ffmpeg/libffmpeg.so"
 
 echo "Backing up original ${OPERA_PATH}/libffmpeg.so -> ${OPERA_PATH}/libffmpeg.so.bak"
 cp "${OPERA_PATH}/libffmpeg.so" "${OPERA_PATH}/libffmpeg.so.bak"
