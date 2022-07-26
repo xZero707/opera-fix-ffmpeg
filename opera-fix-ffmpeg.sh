@@ -30,7 +30,7 @@ fi
 
 if validate_symlink "${OPERA_PATH}"; then
   echo "Symlink is already up to date. Nothing to do."
-  exit 1
+  exit 0
 fi
 
 # Elevate privileges if possible. Required.
