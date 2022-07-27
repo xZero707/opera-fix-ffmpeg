@@ -30,6 +30,8 @@ fi
 
 if validate_symlink "${OPERA_PATH}"; then
   echo "Symlink is already up to date. Nothing to do."
+# setting exit code to 0 so that the script does not create issues with apt post operations if automated
+# also, why would you set this to non-zero? This is a correct behaviour...
   exit 0
 fi
 
