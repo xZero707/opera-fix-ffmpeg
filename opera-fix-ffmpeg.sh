@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
-# See: https://forums.opera.com/topic/37539/solving-the-problem-of-the-opera-browser-with-video-playback-in-ubuntu-and-similar-distributions-linux-mint-kde-neon/
-
-#echo "Warning: This script reportedly breaks recent version of Opera browser. Proceed with caution."
-#echo "However, files are backed up before changing, so you can always restore"
-#echo "Script will automatically proceed in 10 seconds. Press CTRL-C to cancel."
-#sleep 10
-
-# default installation path of Opera using their .deb file
+# default installation path of Opera using their .deb file on Pop!_OS
 OPERA_PATH="${1:-/usr/lib/x86_64-linux-gnu/opera}"
 SNAP_BINARY="${2:-/usr/bin/snap}"
 
