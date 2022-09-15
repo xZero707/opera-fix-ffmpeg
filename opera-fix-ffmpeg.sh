@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
-# See: https://forums.opera.com/topic/37539/solving-the-problem-of-the-opera-browser-with-video-playback-in-ubuntu-and-similar-distributions-linux-mint-kde-neon/
-
-echo "Warning: This script reportedly breaks recent version of Opera browser. Proceed with caution."
-echo "However, files are backed up before changing, so you can always restore"
-echo "Script will automatically proceed in 10 seconds. Press CTRL-C to cancel."
-sleep 10
-
-OPERA_PATH="${1:-/usr/lib/opera}"
+# default installation path of Opera using their .deb file on Pop!_OS
+OPERA_PATH="${1:-/usr/lib/x86_64-linux-gnu/opera}"
 SNAP_BINARY="${2:-/usr/bin/snap}"
 
 validate_symlink() {
@@ -29,7 +23,9 @@ fi
 
 if validate_symlink "${OPERA_PATH}"; then
   echo "Symlink is already up to date. Nothing to do."
-  exit 1
+# setting exit code to 0 so that the script does not create issues with apt post operations if automated
+# also, why would you set this to non-zero? This is a correct behaviour...
+  exit 0
 fi
 
 # Elevate privileges if possible. Required.
@@ -62,8 +58,8 @@ else
   "${SNAP_BINARY}" refresh chromium-ffmpeg
 fi
 
-LATEST_FFMPEG_VER="$(ls /snap/chromium-ffmpeg/current/ | grep -E '^chromium-ffmpeg-[[:digit:]]' | tail -1)"
-LATEST_FFMPEG_LIB="/snap/chromium-ffmpeg/current/${LATEST_FFMPEG_VER}/chromium-ffmpeg/libffmpeg.so"
+LATEST_FFMPEG_VER="$(ls /snap/chromium-ffmpeg/current/ | grep -E '^chromium-ffmpeg-[[:digit:]]'| awk -F- '{ print $3; }'|sort -n|tail -1)"
+LATEST_FFMPEG_LIB="/snap/chromium-ffmpeg/current/chromium-ffmpeg-${LATEST_FFMPEG_VER}/chromium-ffmpeg/libffmpeg.so"
 
 echo "Backing up original ${OPERA_PATH}/libffmpeg.so -> ${OPERA_PATH}/libffmpeg.so.bak"
 cp "${OPERA_PATH}/libffmpeg.so" "${OPERA_PATH}/libffmpeg.so.bak"

@@ -1,0 +1,2 @@
+DPkg::Post-Invoke {"/home/<USER>/dev/opera-fix-ffmpeg/opera-fix-ffmpeg.sh";};
+
